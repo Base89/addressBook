@@ -158,7 +158,7 @@ void addNewAddressee (vector <Addressee> &addressees)
     cout << "Podaj adres: " << endl;
     cin.sync();
     getline(cin, address);
-    int lastID = addressees.back().id;
+    int lastID = addressees.empty() ? 0 : addressees.back().id;
 
     Addressee newAddressee;
     newAddressee.id = lastID + 1;
