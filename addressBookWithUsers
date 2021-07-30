@@ -23,6 +23,7 @@ struct Addressee
     int id, idUser;
     string name, surname, telephoneNumber, email, address;
 };
+int getLastIdAdd();
 void openFileAdd(vector <Addressee> &addressees, int &idLoginUser);
 void checkFileAdd(vector <Addressee> &addressees, int &idLoginUser);
 void saveFileAdd(vector <Addressee> &addressees, Addressee modifiedAddresse);
@@ -158,6 +159,7 @@ void checkFileUsers(vector <User> &users)
     if (usersList.good() == false)
     {
         cout << "Nie mozna otworzyc listy uzytkownikow" << endl;
+        Sleep(1000);
         return;
     }
     else if(usersList.good() == true)
@@ -254,8 +256,37 @@ int log(vector <User> &users)
         i++;
     }
     cout << "Uzytkownik o podanym loginie nie istnieje" << endl;
-    Sleep(1500);
+    Sleep(1000);
     return 0;
+}
+
+int getLastIdAdd()
+{
+    int lastIdAddressee;
+    fstream addressBook;
+    string lineInFile;
+    int dataNumber = 1;
+
+    addressBook.open("ksiazka_adresowa.txt", ios::in);
+
+    while (getline(addressBook, lineInFile, '|'))
+    {
+        if (dataNumber == 1 && addressBook.eof() == false)
+        {
+            lastIdAddressee = atoi(lineInFile.c_str());
+            dataNumber++;
+        }
+        else if (dataNumber >= 7)
+        {
+            dataNumber = 1;
+        }
+        else
+        {
+            dataNumber++;
+        }
+    }
+    addressBook.close();
+    return lastIdAddressee;
 }
 
 void changePassword(vector <User> &users, int idLoginUser)
@@ -270,7 +301,7 @@ void changePassword(vector <User> &users, int idLoginUser)
             users[i].password = password;
             saveFileUsers(users);
             cout << "Haslo zostalo zmienione" << endl;
-            Sleep(1500);
+            Sleep(1000);
         }
     }
 }
@@ -320,7 +351,6 @@ void openFileAdd(vector <Addressee> &addressees, int &idLoginUser)
             {
                 dataNumber = 1;
             }
-
         }
         else
         {
@@ -337,6 +367,7 @@ void checkFileAdd(vector <Addressee> &addressees, int &idLoginUser)
     if (addressBook.good() == false)
     {
         cout << "Nie mozna otworzyc kontaktow" << endl;
+        Sleep(1000);
         return;
     }
     else if(addressBook.good() == true)
@@ -494,7 +525,7 @@ void addNewAddressee (vector <Addressee> &addressees, int idLoginUser)
     cout << "Podaj adres: " << endl;
     cin.sync();
     getline(cin, address);
-    int lastID = addressees.empty() ? 0 : addressees.back().id;
+    int lastID = getLastIdAdd();
 
     Addressee newAddressee;
     newAddressee.id = lastID + 1;
@@ -570,7 +601,7 @@ void deleteAddressee(vector <Addressee> &addressees)
         if (addressees[i].id == id)
         {
             char choice;
-            cout << "Czy na pewno chcesz usunac adresata? (t/n) :";
+            cout << "Czy na pewno chcesz usunac adresata? (t/n) : ";
             cin >> choice;
             if (choice == 't')
             {
@@ -613,24 +644,24 @@ void editAddressee(vector <Addressee> &addressees)
                 switch (numberMenu)
                 {
                 case '1':
-                    cout << "Podaj nowe imie:";
+                    cout << "Podaj nowe imie: ";
                     cin >> addressees[i].name;
                     break;
                 case '2':
-                    cout << "Podaj nowe nazwisko:";
+                    cout << "Podaj nowe nazwisko: ";
                     cin >> addressees[i].surname;
                     break;
                 case '3':
-                    cout << "Podaj nowy numer telefonu:";
+                    cout << "Podaj nowy numer telefonu: ";
                     cin.sync();
                     getline(cin, addressees[i].telephoneNumber);
                     break;
                 case '4':
-                    cout << "Podaj nowy e-mail:";
+                    cout << "Podaj nowy e-mail: ";
                     cin >> addressees[i].email;
                     break;
                 case '5':
-                    cout << "Podaj nowy adres:";
+                    cout << "Podaj nowy adres: ";
                     cin.sync();
                     getline(cin, addressees[i].address);
                     break;
