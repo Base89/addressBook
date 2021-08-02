@@ -601,7 +601,7 @@ void deleteAddressee(vector <Addressee> &addressees)
         if (addressees[i].id == id)
         {
             char choice;
-            cout << "Czy na pewno chcesz usunac adresata? (t/n) : ";
+            cout << "Czy na pewno chcesz usunac adresata? (t/n): ";
             cin >> choice;
             if (choice == 't')
             {
@@ -613,6 +613,18 @@ void deleteAddressee(vector <Addressee> &addressees)
             {
                 return;
             }
+            else
+            {
+                cout << "Niepoprawny wybor" << endl;
+                Sleep(1000);
+                return;
+            }
+        }
+        else
+        {
+            cout << "Niedozwolony wybor" << endl;
+            Sleep(1000);
+            return;
         }
     }
     int idDeletedAddressee = id;
