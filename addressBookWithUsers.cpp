@@ -596,18 +596,21 @@ void deleteAddressee(vector <Addressee> &addressees)
     int id = 0;
     cout << "Podaj ID osoby do usuniecia: ";
     cin >> id;
-    for (int i = 0, end = addressees.size(); i < end; i++)
+    for (vector <Addressee>::iterator i = addressees.begin(); i < addressees.end(); i++)
     {
-        if (addressees[i].id == id)
+        if (i -> id == id)
         {
             char choice;
             cout << "Czy na pewno chcesz usunac adresata? (t/n): ";
             cin >> choice;
             if (choice == 't')
             {
-                addressees.erase(addressees.begin() + i);
+                addressees.erase(i);
                 cout << "Usunieto adresata" << endl;
                 Sleep(1000);
+                int idDeletedAddressee = id;
+                saveFileAdd(addressees, idDeletedAddressee);
+                return;
             }
             else if (choice == 'n')
             {
@@ -620,15 +623,9 @@ void deleteAddressee(vector <Addressee> &addressees)
                 return;
             }
         }
-        else
-        {
-            cout << "Niedozwolony wybor" << endl;
-            Sleep(1000);
-            return;
-        }
     }
-    int idDeletedAddressee = id;
-    saveFileAdd(addressees, idDeletedAddressee);
+    cout << "Niedozwolony wybor" << endl;
+    Sleep(1000);
 }
 
 void editAddressee(vector <Addressee> &addressees)
